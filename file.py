@@ -6,9 +6,10 @@ Created on Mon Jun  1 19:13:36 2020
 """
 
 
-import numpy as np
+
 from flask import Flask, request, jsonify, render_template
 import pickle
+import numpy as np
 
 app = Flask(__name__)
 model = pickle.load(open('final.pkl', 'rb'))
