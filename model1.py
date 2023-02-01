@@ -35,6 +35,9 @@ data.info()
 # Data Cleaning
 # Filling the area and in_your_room using intepolate method
 
+# checking correlation with existing columns
+sns.heatmap(data.corr());
+
 data['area'].interpolate(method='pad',inplace=True)
 data['in_your_room'].interpolate(method='pad',inplace=True)
 data = data.replace({'hotel_star_rating' : { '1 star' : 1, '2 star' : 2, '3 star' : 3, '4 star' : 4, '5 star' : 5, 'Three on 5' : 3,'Four on 5' : 4,'Five on 5': 5,'Four star': 4 }})
