@@ -24,11 +24,22 @@ df.head()
 
 data = df[['area','city','in_your_room','mmt_review_score','hotel_star_rating']]
 data.head()
+data.tail()
+
+
+data.describe()
+data.info()
+
+
+
+# Data Cleaning
+# Filling the area and in_your_room using intepolate method
 
 data['area'].interpolate(method='pad',inplace=True)
 data['in_your_room'].interpolate(method='pad',inplace=True)
 data = data.replace({'hotel_star_rating' : { '1 star' : 1, '2 star' : 2, '3 star' : 3, '4 star' : 4, '5 star' : 5, 'Three on 5' : 3,'Four on 5' : 4,'Five on 5': 5,'Four star': 4 }})
 
+# Considering the target value as it is having more than 50% null values
 X = data['mmt_review_score']
 
 x= X.values.reshape(-1,1)
@@ -36,6 +47,7 @@ x= X.values.reshape(-1,1)
 x
 
 """# Filling null values in target variable"""
+
 
 from sklearn.impute import SimpleImputer
 
@@ -56,6 +68,7 @@ data.isnull().sum()
 
 data['in_your_room']=data['in_your_room'].astype('str')
 
+#Splitting the data using '/' inorder to count facilities
 def function(str):
      return len(str.split('|'))
 
@@ -65,6 +78,7 @@ data.drop(['in_your_room'], axis=1,inplace=True)
 data.drop(['city'], axis=1,inplace=True)
 data.head()
 
+#Converting the categorical variables using one-hot encoding
 City=pd.get_dummies(df['city'],drop_first=True,dummy_na=False)
 df3=pd.DataFrame(City)
 df3
@@ -72,11 +86,13 @@ df3
 from pandas import DataFrame
 df1=pd.DataFrame(data[['hotel_star_rating','count_in_your_room']])
 df2=pd.DataFrame(data['mmt_review_score'])
-#final_withcity = pd.concat([df1,df3, df2], axis=1)
+
+#concatinating all the data frames
+
 final = pd.concat([df1,df2], axis=1)
 final
 
-#final_withcity.corr()
+#checking the correlation between the columns present in data
 data.corr()
 data.columns
 
