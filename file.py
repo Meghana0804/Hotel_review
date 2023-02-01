@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Wed Feb  1 19:09:58 2023
+
+@author: megha
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Mon Jun  1 19:13:36 2020
 
 @author: bvv
@@ -11,7 +18,7 @@ import numpy as np
 
 
 app = Flask(__name__)
-model = pickle.load(open('final.pkl', 'rb'))
+model_pkl = pickle.load(open('final.pkl', 'rb'))
 #print(type(model))
 
 
@@ -22,27 +29,27 @@ def home():
 @app.route('/predict',methods=['POST'])
 def predict():
     '''
-    For rendering results on HTML GUI
+   To get values from HTML user as input
     '''
     int_ft = [int(x) for x in request.form.values()]
     print(int_ft)
     final_ft = [np.array(int_ft)]
     print(final_ft)
-    prediction = model.predict(final_ft)
-    #print(prediction)
-    final_values = round(prediction[0], 2)
+    final_prediction = model_pkl.predict(final_ft)
+    #print(final_prediction)
+    final_values = round(final_prediction[0], 2)
 
     return render_template('index.html', prediction_text='Rating is  {}'.format(final_values))
 
 @app.route('/predict_api',methods=['POST'])
 def predict_api():
     '''
-    For direct API calls trought request
+    To get results by predict api
     '''
     data_values = request.get_json(force=True)
-    prediction = model.predict([np.array(list(data_values.values()))])
+    final_prediction = model_pkl.predict([np.array(list(data_values.values()))])
 
-    final_values = prediction[0]
+    final_values = final_prediction[0]
     return jsonify(final_values)
 
 if __name__ == "__main__":
